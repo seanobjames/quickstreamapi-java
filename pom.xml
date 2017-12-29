@@ -1,0 +1,47 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.qvalent.quickstreamapi</groupId>
+  <artifactId>quickstreamapi-java</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <name>QuickStream REST API - Java Client Library</name>
+  <description>Java Client Library for QuickStream REST API</description>
+  <build>
+    <sourceDirectory>src</sourceDirectory>
+    <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.7.0</version>
+        <configuration>
+          <source>1.8</source>
+          <target>1.8</target>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+  <url>https://api.quickstream.westpac.com.au</url>
+  <scm>
+  	<url>https://github.com/seanobjames/quickstreamapi-java</url>
+  	<connection>${scmConnection}</connection>
+  	<developerConnection>${scmConnection}</developerConnection>
+  </scm>
+  <inceptionYear>2017</inceptionYear>
+  <dependencies>
+  	<dependency>
+  		<groupId>org.mockito</groupId>
+  		<artifactId>mockito-all</artifactId>
+  		<version>1.9.5</version>
+  		<scope>test</scope>
+  	</dependency>
+  	<dependency>
+  		<groupId>junit</groupId>
+  		<artifactId>junit</artifactId>
+  		<version>4.8.1</version>
+  		<scope>test</scope>
+  	</dependency>
+  	<dependency>
+  		<groupId>org.json</groupId>
+  		<artifactId>json</artifactId>
+  		<version>20160810</version>
+  	</dependency>
+  </dependencies>
+</project>
