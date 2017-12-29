@@ -14,8 +14,7 @@ public class Environment
     private String myBaseURL;
 
     // For internal QuickStream development
-    public static final Environment DEVELOPMENT = new Environment( getDevelopmentBaseURL() + ":" + getDevelopmentPort(),
-            "development" );
+    public static final Environment DEVELOPMENT = new Environment( getDevBaseURL() + ":" + getDevPort(), "development" );
 
     // For you to use during your development and testing.
     public static final Environment TEST = new Environment( "https://api.quickstream.support.qvalent.com", "test" );
@@ -26,7 +25,7 @@ public class Environment
     public Environment( final String baseURL, final String environmentName )
     {
         myEnvironmentName = environmentName;
-        myBaseURL = baseURL + "/quickstreamapi/v" + Configuration.apiVersion();
+        myBaseURL = baseURL + "/rest/v" + Configuration.apiVersion();
     }
 
     public String getEnvironmentName()
@@ -49,7 +48,7 @@ public class Environment
         this.myBaseURL = baseURL;
     }
 
-    public static String getDevelopmentBaseURL()
+    public static String getDevBaseURL()
     {
         if ( System.getenv().get( theDevelopmentBaseURLSysEnvName ) != null )
         {
@@ -61,7 +60,7 @@ public class Environment
         }
     }
 
-    public static String getDevelopmentPort()
+    public static String getDevPort()
     {
         if ( System.getenv().get( theDevelopmentPortSysEnvName ) != null )
         {

@@ -16,7 +16,7 @@ public class SingleUseTokenAPITest
     public void createQuickStreamAPI() 
     {
         this.quickstreamAPI = new QuickStreamAPI(
-            Environment.DEVELOPMENT,
+            Environment.TEST,
             "publishableKey",
             "secretKey"
         );

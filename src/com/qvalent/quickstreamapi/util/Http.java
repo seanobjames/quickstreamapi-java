@@ -103,9 +103,7 @@ public class Http
             {
                 logger.log( Level.FINE, sanitiseRequestBodyForLogging( postBody ) );
             }
-            
-            // TODO handle HTTPS. Do we need a certificate?
-            
+
             if ( postBody != null )
             {  
                 OutputStream outputStream = null;

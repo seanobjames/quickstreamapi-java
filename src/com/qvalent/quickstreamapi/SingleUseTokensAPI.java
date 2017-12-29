@@ -15,7 +15,7 @@ public class SingleUseTokensAPI extends Resource
     
     public SingleUseToken generate()
     {
-        final JSONObject json = myHttp.get( AccessType.PUBLISHABLE_KEY, "/single-use-tokens" );
+        final JSONObject json = myHttp.post( AccessType.PUBLISHABLE_KEY, "/single-use-tokens" );
         return SingleUseToken.from( json );
     }
 }
