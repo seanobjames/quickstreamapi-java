@@ -21,8 +21,7 @@ public class Environment
     public static final Environment TEST = new Environment( "https://api.quickstream.support.qvalent.com", "test" );
 
     // For production.
-    public static final Environment PRODUCTION = new Environment( "https://api.quickstream.westpac.com.au",
-            "production" );
+    public static final Environment PRODUCTION = new Environment( "https://api.quickstream.westpac.com.au", "production" );
 
     public Environment( final String baseURL, final String environmentName )
     {
@@ -55,7 +54,8 @@ public class Environment
         if ( System.getenv().get( theDevelopmentBaseURLSysEnvName ) != null )
         {
             return System.getenv().get( theDevelopmentBaseURLSysEnvName );
-        } else
+        }
+        else
         {
             return theDefaultDevelopmentBaseURL;
         }
@@ -66,7 +66,8 @@ public class Environment
         if ( System.getenv().get( theDevelopmentPortSysEnvName ) != null )
         {
             return System.getenv().get( theDevelopmentPortSysEnvName );
-        } else
+        }
+        else
         {
             return theDefaultDevelopmentPort;
         }

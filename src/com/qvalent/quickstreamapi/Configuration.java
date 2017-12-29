@@ -5,6 +5,8 @@ import java.net.Proxy;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.qvalent.quickstreamapi.exception.ConfigurationException;
 
 public class Configuration
@@ -12,13 +14,16 @@ public class Configuration
     private Environment myEnvironment;
     private String myPublishableKey;
     private String mySecretKey;
-    private static Logger theLogger;
     private int myTimeout;
     private Proxy myProxy;
+    
+    private static Logger theLogger;
+    private static String theLogName = "QuickStreamAPI";
+    public static String theLogPrefix = "[" + theLogName + "]";
 
     static
     {
-        theLogger = Logger.getLogger( "QuickStreamAPI" );
+        theLogger = Logger.getLogger( theLogName );
         theLogger.setLevel( Level.INFO );
     }
 
@@ -39,18 +44,20 @@ public class Configuration
     {
         myEnvironment = environment;
 
-        if ( publishableKey == null || publishableKey.isEmpty() )
+        if ( StringUtils.isEmpty( publishableKey ) )
         {
             throw new ConfigurationException( "publishableKey must be set" );
-        } else
+        }
+        else
         {
             myPublishableKey = publishableKey;
         }
 
-        if ( secretKey == null || secretKey.isEmpty() )
+        if ( StringUtils.isEmpty( secretKey ) )
         {
             throw new ConfigurationException( "secretKey must be set" );
-        } else
+        }
+        else
         {
             mySecretKey = secretKey;
         }
@@ -64,6 +71,11 @@ public class Configuration
     public Boolean usesProxy()
     {
         return myProxy != null;
+    }
+    
+    public Proxy getProxy()
+    {
+        return myProxy;
     }
 
     public void setProxy( final String url, final Integer port )
@@ -94,5 +106,14 @@ public class Configuration
     public void setTimeout( int timeout )
     {
         myTimeout = timeout;
+    }
+
+    public String getPublishableKey()
+    {
+        return myPublishableKey;
+    }
+    public String getSecretKey()
+    {
+        return mySecretKey;
     }
 }
