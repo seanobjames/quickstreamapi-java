@@ -86,11 +86,13 @@ public class Http
         return httpRequest( RequestMethod.PATCH, accessType, url, resource.toJSON() );
     }
 
-    private JSONObject httpRequest( final RequestMethod requestMethod, final AccessType accessType, final String url, final String postBody )
+    private JSONObject httpRequest( final RequestMethod requestMethod, 
+                                    final AccessType accessType, 
+                                    final String url, 
+                                    final String postBody )
     {
         HttpURLConnection connection = null;
         String contentType = "application/json";
-        String boundary = "boundary" + System.currentTimeMillis();
         JSONObject jsonResponse = null;
 
         try
@@ -110,8 +112,6 @@ public class Http
                 try
                 {
                     outputStream = connection.getOutputStream();
-                    final PrintWriter writer = new PrintWriter( new OutputStreamWriter( outputStream, "UTF-8" ), true );
-
                     outputStream.write( postBody.getBytes("UTF-8") );
                 }
                 finally
@@ -139,12 +139,19 @@ public class Http
             InputStream inputStream = null;
             try
             {
-                inputStream = connection.getResponseCode() == 422 ? connection.getErrorStream() : connection.getInputStream();
+                inputStream = connection.getResponseCode() == 422 
+                        ? connection.getErrorStream() : connection.getInputStream();
                 
                 final String response = StringUtil.inputStreamToString( inputStream );
                 
-                logger.log( Level.INFO, Configuration.theLogPrefix + " [{0}]] {1} {2}", new Object[] { getCurrentTime(), requestMethod.toString(), url } );
-                logger.log( Level.FINE, Configuration.theLogPrefix + " [{0}]] {1} {2} {3}", new Object[] { getCurrentTime(), requestMethod.toString(), url, connection.getResponseCode() } );
+                logger.log( 
+                        Level.INFO, 
+                        Configuration.theLogPrefix + " [{0}]] {1} {2}", 
+                        new Object[] { getCurrentTime(), requestMethod.toString(), url } );
+                logger.log( 
+                        Level.FINE, 
+                        Configuration.theLogPrefix + " [{0}]] {1} {2} {3}", 
+                        new Object[] { getCurrentTime(), requestMethod.toString(), url, connection.getResponseCode() } );
                 
                 if( response != null )
                 {
@@ -181,7 +188,10 @@ public class Http
         return jsonResponse;
     }
     
-    private HttpURLConnection buildConnection( final RequestMethod requestMethod, final AccessType accessType, final String urlString, final String contentType ) throws java.io.IOException
+    private HttpURLConnection buildConnection( final RequestMethod requestMethod, 
+                                               final AccessType accessType, 
+                                               final String urlString, 
+                                               final String contentType ) throws java.io.IOException
     {
         final URL url = new URL(myConfiguration.getBaseURL() + urlString);
         HttpURLConnection connection;
@@ -196,7 +206,9 @@ public class Http
         
         connection.setRequestMethod( requestMethod.toString() );
         connection.addRequestProperty( "Accept", "application/json" );
-        connection.addRequestProperty( "User-Agent", "QuickStream REST API - Java Client Library " + Configuration.clientLibraryVersion() );
+        connection.addRequestProperty( 
+                "User-Agent", 
+                "QuickStream REST API - Java Client Library " + Configuration.clientLibraryVersion() );
         connection.addRequestProperty( "Authorization", getAuthorizationHeader( accessType ) );
         connection.setRequestProperty( "Content-Type", contentType );
         

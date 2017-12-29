@@ -26,7 +26,7 @@ public class Environment
     public Environment( final String baseURL, final String environmentName )
     {
         myEnvironmentName = environmentName;
-        myBaseURL = baseURL;
+        myBaseURL = baseURL + "/quickstreamapi/v" + Configuration.apiVersion();
     }
 
     public String getEnvironmentName()
