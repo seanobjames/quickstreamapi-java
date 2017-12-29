@@ -6,15 +6,11 @@ import com.qvalent.quickstreamapi.model.SingleUseToken;
 import com.qvalent.quickstreamapi.util.Http;
 import com.qvalent.quickstreamapi.util.Http.AccessType;
 
-public class SingleUseTokensAPI
+public class SingleUseTokensAPI extends Resource
 {
-    private Configuration myConfiguration;
-    private Http myHttp;
-    
     public SingleUseTokensAPI( final Configuration configuration, final Http http )
     {
-        myConfiguration = configuration;
-        myHttp = http;
+        super( configuration, http );
     }
     
     public SingleUseToken generate()
