@@ -11,6 +11,8 @@ import com.qvalent.quickstreamapi.exception.ConfigurationException;
 
 public class Configuration
 {
+    private static int theDefaultTimeout = 6000;
+
     private final Environment myEnvironment;
     private String myPublishableKey;
     private String mySecretKey;
@@ -37,8 +39,6 @@ public class Configuration
     {
         return "1";
     }
-
-    private static int theDefaultTimeout = 6000;
 
     public Configuration( final Environment environment, final String publishableKey, final String secretKey )
     {

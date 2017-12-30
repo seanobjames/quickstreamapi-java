@@ -13,7 +13,7 @@ public class UnexpectedException extends QuickStreamAPIException
 
     public UnexpectedException( final String message, final ErrorResponse error )
     {
-        super( error.toString() );
+        super( message + ": " + error.toString() );
     }
 
     public UnexpectedException( final String message, final Throwable cause )

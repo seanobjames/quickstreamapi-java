@@ -10,9 +10,9 @@ import com.qvalent.quickstreamapi.util.Http.RequestMethod;
 
 public class Link
 {
-    final String myRel;
-    final URL myHref;
-    final RequestMethod myRequestMethod;
+    private final String myRel;
+    private final URL myHref;
+    private final RequestMethod myRequestMethod;
 
     public Link( final String rel, final URL href, final RequestMethod requestMethod )
     {

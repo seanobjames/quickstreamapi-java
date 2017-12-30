@@ -119,7 +119,8 @@ public class Http
 
             throwExceptionIfErrorResponseReceived( connection );
 
-            try ( InputStream inputStream = (connection.getResponseCode() == 422) ? connection.getErrorStream() : connection.getInputStream() )
+            try ( InputStream inputStream =
+                    (connection.getResponseCode() == 422) ? connection.getErrorStream() : connection.getInputStream() )
             {
                 final String response = StringUtil.inputStreamToString( inputStream );
 
@@ -187,7 +188,7 @@ public class Http
     private HttpURLConnection buildConnection( final RequestMethod requestMethod,
                                                final AccessType accessType,
                                                final String urlString,
-                                               final String contentType ) throws java.io.IOException
+                                               final String contentType ) throws IOException
     {
         final URL url = new URL(myConfiguration.getBaseURL() + urlString);
         HttpURLConnection connection;
@@ -231,27 +232,29 @@ public class Http
         return responseCode != 200 && responseCode != 201 && responseCode != 422;
     }
 
-    private String sanitiseRequestBodyForLogging( String requestBody )
+    private String sanitiseRequestBodyForLogging( final String requestBody )
     {
         if ( requestBody == null )
         {
             return requestBody;
         }
 
+        String sanitisedRequestBody = requestBody;
+
         Pattern regex = Pattern.compile( "(^)", Pattern.MULTILINE );
-        Matcher matcher = regex.matcher( requestBody );
+        Matcher matcher = regex.matcher( sanitisedRequestBody );
         if ( matcher.find() )
         {
-            requestBody = matcher.replaceAll( Configuration.theLogPrefix + " $1" );
+            sanitisedRequestBody = matcher.replaceAll( Configuration.theLogPrefix + " $1" );
         }
 
         regex = Pattern.compile( "(.{6}).+?(.{4})" );
-        matcher = regex.matcher( requestBody );
+        matcher = regex.matcher( sanitisedRequestBody );
         if ( matcher.find() )
         {
-            requestBody = matcher.replaceAll( "$1xxxxxx$2" );
+            sanitisedRequestBody = matcher.replaceAll( "$1xxxxxx$2" );
         }
 
-        return requestBody;
+        return sanitisedRequestBody;
     }
 }
