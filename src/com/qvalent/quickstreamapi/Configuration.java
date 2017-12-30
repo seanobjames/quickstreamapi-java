@@ -11,12 +11,12 @@ import com.qvalent.quickstreamapi.exception.ConfigurationException;
 
 public class Configuration
 {
-    private Environment myEnvironment;
+    private final Environment myEnvironment;
     private String myPublishableKey;
     private String mySecretKey;
     private int myTimeout;
     private Proxy myProxy;
-    
+
     private static Logger theLogger;
     private static String theLogName = "QuickStreamAPI";
     public static String theLogPrefix = "[" + theLogName + "]";
@@ -72,7 +72,7 @@ public class Configuration
     {
         return myProxy != null;
     }
-    
+
     public Proxy getProxy()
     {
         return myProxy;
@@ -103,7 +103,7 @@ public class Configuration
         return ( myTimeout == 0 ) ? theDefaultTimeout : myTimeout;
     }
 
-    public void setTimeout( int timeout )
+    public void setTimeout( final int timeout )
     {
         myTimeout = timeout;
     }

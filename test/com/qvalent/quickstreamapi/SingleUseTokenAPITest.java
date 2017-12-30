@@ -1,29 +1,42 @@
 package com.qvalent.quickstreamapi;
 
-import org.junit.Test;
-
-import com.qvalent.quickstreamapi.model.SingleUseToken;
+import static org.junit.Assert.assertNotNull;
 
 import org.junit.Before;
+import org.junit.Test;
 
-import static org.junit.Assert.*;
+import com.qvalent.quickstreamapi.exception.AuthenticationException;
+import com.qvalent.quickstreamapi.model.SingleUseToken;
 
 public class SingleUseTokenAPITest
 {
     private QuickStreamAPI quickstreamAPI;
-    
+    private QuickStreamAPI badCredentialsAPI;
+
     @Before
-    public void createQuickStreamAPI() 
+    public void createQuickStreamAPI()
     {
-        this.quickstreamAPI = new QuickStreamAPI(
+        badCredentialsAPI = new QuickStreamAPI(
             Environment.TEST,
             "publishableKey",
             "secretKey"
         );
+
+        quickstreamAPI = new QuickStreamAPI(
+            Environment.TEST,
+            "QUICKSTREAMDEMO_PUB",
+            "QUICKSTREAMDEMO_SEC"
+        );
     }
-    
-    @Test
-    public void generateSingleUseTokenOnSuccess()
+
+    @Test( expected=AuthenticationException.class )
+    public void generateSingleUseTokenWithIncorrectCredentials()
+    {
+        badCredentialsAPI.singleUseTokens().generate();
+    }
+
+    @Test()
+    public void generateSingleUseTokenSuccess()
     {
         final SingleUseToken token = quickstreamAPI.singleUseTokens().generate();
         assertNotNull( token.getSingleUseToken() );

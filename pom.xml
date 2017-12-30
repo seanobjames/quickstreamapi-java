@@ -18,7 +18,7 @@
       </plugin>
     </plugins>
   </build>
-  <url>https://api.quickstream.westpac.com.au</url>
+  <url>https://quickstream.westpac.com.au</url>
   <scm>
   	<url>https://github.com/seanobjames/quickstreamapi-java</url>
   	<connection>${scmConnection}</connection>

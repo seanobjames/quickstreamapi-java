@@ -9,8 +9,8 @@ public class StringUtil
     public static String inputStreamToString( final InputStream inputStream ) throws IOException
     {
         final InputStreamReader inputReader = new InputStreamReader(inputStream);
-        StringBuilder builder = new StringBuilder();
-        char[] buffer = new char[0x1000];
+        final StringBuilder builder = new StringBuilder();
+        final char[] buffer = new char[0x1000];
         int bytesRead = inputReader.read(buffer, 0, buffer.length);
         while (bytesRead >= 0) {
             builder.append(buffer, 0, bytesRead);

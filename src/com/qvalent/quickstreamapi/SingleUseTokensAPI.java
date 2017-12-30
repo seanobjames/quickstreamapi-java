@@ -12,7 +12,7 @@ public class SingleUseTokensAPI extends Resource
     {
         super( configuration, http );
     }
-    
+
     public SingleUseToken generate()
     {
         final JSONObject json = myHttp.post( AccessType.PUBLISHABLE_KEY, "/single-use-tokens" );

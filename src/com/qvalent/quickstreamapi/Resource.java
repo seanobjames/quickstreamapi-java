@@ -9,13 +9,13 @@ public abstract class Resource
 {
     protected Configuration myConfiguration;
     protected Http myHttp;
-    
+
     public Resource( final Configuration configuration, final Http http )
     {
         myConfiguration = configuration;
         myHttp = http;
     }
-    
+
     public String toJSON()
     {
         throw new UnsupportedOperationException();

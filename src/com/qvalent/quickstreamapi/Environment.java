@@ -33,9 +33,9 @@ public class Environment
         return myEnvironmentName;
     }
 
-    public void setEnvironmentName( String environmentName )
+    public void setEnvironmentName( final String environmentName )
     {
-        this.myEnvironmentName = environmentName;
+        myEnvironmentName = environmentName;
     }
 
     public String getBaseURL()
@@ -43,9 +43,9 @@ public class Environment
         return myBaseURL;
     }
 
-    public void setBaseURL( String baseURL )
+    public void setBaseURL( final String baseURL )
     {
-        this.myBaseURL = baseURL;
+        myBaseURL = baseURL;
     }
 
     public static String getDevBaseURL()
