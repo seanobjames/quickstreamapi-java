@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.qvalent.quickstreamapi.exception.AuthenticationException;
+import com.qvalent.quickstreamapi.exception.AuthorizationException;
 import com.qvalent.quickstreamapi.model.SingleUseToken;
 
 public class SingleUseTokenAPITest
@@ -35,7 +36,7 @@ public class SingleUseTokenAPITest
         badCredentialsAPI.singleUseTokens().generate();
     }
 
-    @Test()
+    @Test( expected=AuthorizationException.class )
     public void generateSingleUseTokenSuccess()
     {
         final SingleUseToken token = quickstreamAPI.singleUseTokens().generate();
