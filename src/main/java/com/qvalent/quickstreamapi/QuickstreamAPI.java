@@ -3,10 +3,10 @@ package com.qvalent.quickstreamapi;
 import com.qvalent.quickstreamapi.util.Http;
 
 /**
-* This is the primary interface to the QuickStream API. It is used
+* This is the primary interface to the Quickstream API. It is used
 * to interact with:
 * <ul>
-* <li> {@link SingleUseTokenAPI SingleUseTokens}</li>
+* <li> {@link SingleUseTokensAPI SingleUseTokens}</li>
 * </ul>
 *
 * Quick start example:
@@ -14,25 +14,28 @@ import com.qvalent.quickstreamapi.util.Http;
 * <pre>
 * import com.qvalent.quickstreamapi.*;
 *
-* public class QuickStreamAPIExample
+* public class QuickstreamAPIExample
 * {
-*     QuickStreamAPI quickstreamAPI = new QuickStreamAPI(
-*         Environment.TEST, &quot;thePublishableKey&quot;, &quot;theSecretKey&quot; );
+*     final QuickstreamAPI quickstreamAPI = new QuickstreamAPI(
+*         Environment.TEST,
+*         &quot;thePublishableKey&quot;,
+*         &quot;theSecretKey&quot; );
 *
-*     SingleUseTokenRequest request = new SingleUseTokenRequest( &quot;theSupplierBusinessCode&quot; )
-*         .cardAccount().number( &quot;4111111111111111&quot; ).expiryDate( &quot;2022-01&quot; ).done();
+*     final CardRequest cardRequest = new CardRequestBuilder( &quot;theSupplierCode&quot; )
+*             .cardNumber( &quot;4242424242424242&quot; ).expiryDateMonth( &quot;01&quot; ).expiryDateYear( &quot;2050&quot; ).build()
 *
-*     SingleUseToken token = quickstreamAPI.singleUseTokenAPI().get(request);
-*     System.out.print(&quot;Single Use Token: &quot; + token.getToken());
+*     final SingleUseTokenResponse token = quickstreamAPI.singleUseTokens().generate( cardRequest );
+*
+*     System.out.print( &quot;Single Use Token Id: &quot; + token.getSingleUseTokenId() );
 * }
 * </pre>
 */
-public class QuickStreamAPI
+public class QuickstreamAPI
 {
     private final Configuration configuration;
     private final Http http;
 
-    public QuickStreamAPI( final Environment environment,
+    public QuickstreamAPI( final Environment environment,
                            final String publishableKey,
                            final String secretKey )
     {

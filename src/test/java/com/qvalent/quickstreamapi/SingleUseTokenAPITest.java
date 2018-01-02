@@ -12,20 +12,20 @@ import com.qvalent.quickstreamapi.model.response.SingleUseTokenResponse;
 
 public class SingleUseTokenAPITest
 {
-    private QuickStreamAPI quickstreamAPI;
-    private QuickStreamAPI badCredentialsAPI;
+    private QuickstreamAPI quickstreamAPI;
+    private QuickstreamAPI badCredentialsAPI;
     private CardRequest cardRequest;
 
     @Before
     public void before()
     {
-        badCredentialsAPI = new QuickStreamAPI(
+        badCredentialsAPI = new QuickstreamAPI(
             Environment.TEST,
             "publishableKey",
             "secretKey"
         );
 
-        quickstreamAPI = new QuickStreamAPI(
+        quickstreamAPI = new QuickstreamAPI(
             Environment.PRODUCTION,
             "QUICKSTREAMDEMO_PUB",
             "QUICKSTREAMDEMO_SEC"
