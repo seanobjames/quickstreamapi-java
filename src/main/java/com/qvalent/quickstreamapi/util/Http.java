@@ -14,14 +14,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
-import org.json.JSONObject;
 
 import com.qvalent.quickstreamapi.Configuration;
-import com.qvalent.quickstreamapi.Resource;
 import com.qvalent.quickstreamapi.exception.AuthenticationException;
 import com.qvalent.quickstreamapi.exception.AuthorizationException;
 import com.qvalent.quickstreamapi.exception.UnexpectedException;
-import com.qvalent.quickstreamapi.model.ErrorResponse;
+import com.qvalent.quickstreamapi.model.request.Request;
+import com.qvalent.quickstreamapi.model.response.Error;
 
 public class Http
 {
@@ -42,54 +41,54 @@ public class Http
         myConfiguration = configuration;
     }
 
-    public JSONObject get( final AccessType accessType, final String url )
+    public String get( final AccessType accessType, final String url )
     {
         return httpRequest( RequestMethod.GET, accessType, url, null );
     }
 
-    public JSONObject delete( final AccessType accessType, final String url )
+    public String delete( final AccessType accessType, final String url )
     {
         return httpRequest( RequestMethod.DELETE, accessType, url, null );
     }
 
-    public JSONObject post( final AccessType accessType, final String url )
+    public String post( final AccessType accessType, final String url )
     {
         return httpRequest( RequestMethod.POST, accessType, url, null );
     }
 
-    public JSONObject post( final AccessType accessType, final String url, final Resource resource )
+    public String post( final AccessType accessType, final String url, final Request request )
     {
-        return httpRequest( RequestMethod.POST, accessType, url, resource.toJSON() );
+        return httpRequest( RequestMethod.POST, accessType, url, request.toJSON() );
     }
 
-    public JSONObject put( final AccessType accessType, final String url )
+    public String put( final AccessType accessType, final String url )
     {
         return httpRequest( RequestMethod.PUT, accessType, url, null );
     }
 
-    public JSONObject put( final AccessType accessType, final String url, final Resource resource )
+    public String put( final AccessType accessType, final String url, final Request request )
     {
-        return httpRequest( RequestMethod.PUT, accessType, url, resource.toJSON() );
+        return httpRequest( RequestMethod.PUT, accessType, url, request.toJSON() );
     }
 
-    public JSONObject patch( final AccessType accessType, final String url )
+    public String patch( final AccessType accessType, final String url )
     {
         return httpRequest( RequestMethod.PATCH, accessType, url, null );
     }
 
-    public JSONObject patch( final AccessType accessType, final String url, final Resource resource )
+    public String patch( final AccessType accessType, final String url, final Request request )
     {
-        return httpRequest( RequestMethod.PATCH, accessType, url, resource.toJSON() );
+        return httpRequest( RequestMethod.PATCH, accessType, url, request.toJSON() );
     }
 
-    private JSONObject httpRequest( final RequestMethod requestMethod,
-                                    final AccessType accessType,
-                                    final String url,
-                                    final String postBody )
+    private String httpRequest( final RequestMethod requestMethod,
+                                final AccessType accessType,
+                                final String url,
+                                final String postBody )
     {
         HttpURLConnection connection = null;
         final String contentType = "application/json";
-        JSONObject jsonResponse = null;
+        String response = null;
 
         try
         {
@@ -122,7 +121,7 @@ public class Http
             try ( InputStream inputStream =
                     (connection.getResponseCode() == 422) ? connection.getErrorStream() : connection.getInputStream() )
             {
-                final String response = StringUtil.inputStreamToString( inputStream );
+                response = StringUtil.inputStreamToString( inputStream );
 
                 logger.log(
                         Level.INFO,
@@ -142,8 +141,6 @@ public class Http
                 {
                     return null;
                 }
-
-                jsonResponse = new JSONObject( response );
             }
         }
         catch( final IOException e )
@@ -158,17 +155,17 @@ public class Http
             }
         }
 
-        return jsonResponse;
+        return response;
     }
 
     private void throwExceptionIfErrorResponseReceived( final HttpURLConnection connection ) throws IOException
     {
         if( isErrorCode( connection.getResponseCode() ) )
         {
-            ErrorResponse error = null;
+            Error error = null;
             try( InputStream inputStream = connection.getErrorStream() )
             {
-                error = ErrorResponse.from( new JSONObject( StringUtil.inputStreamToString( inputStream ) ) );
+                error = Error.from( StringUtil.inputStreamToString( inputStream ) );
             }
 
             switch( connection.getResponseCode() )

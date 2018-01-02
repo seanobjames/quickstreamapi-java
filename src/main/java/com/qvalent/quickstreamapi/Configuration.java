@@ -13,11 +13,11 @@ public class Configuration
 {
     private static int theDefaultTimeout = 6000;
 
-    private final Environment myEnvironment;
-    private String myPublishableKey;
-    private String mySecretKey;
-    private int myTimeout;
-    private Proxy myProxy;
+    private final Environment environment;
+    private String publishableKey;
+    private String secretKey;
+    private int timeout;
+    private Proxy proxy;
 
     private static Logger theLogger;
     private static String theLogName = "QuickStreamAPI";
@@ -42,7 +42,7 @@ public class Configuration
 
     public Configuration( final Environment environment, final String publishableKey, final String secretKey )
     {
-        myEnvironment = environment;
+        this.environment = environment;
 
         if ( StringUtils.isEmpty( publishableKey ) )
         {
@@ -50,7 +50,7 @@ public class Configuration
         }
         else
         {
-            myPublishableKey = publishableKey;
+            this.publishableKey = publishableKey;
         }
 
         if ( StringUtils.isEmpty( secretKey ) )
@@ -59,33 +59,33 @@ public class Configuration
         }
         else
         {
-            mySecretKey = secretKey;
+            this.secretKey = secretKey;
         }
     }
 
     public String getBaseURL()
     {
-        return myEnvironment.getBaseURL();
+        return environment.getBaseURL();
     }
 
     public Boolean usesProxy()
     {
-        return myProxy != null;
+        return proxy != null;
     }
 
     public Proxy getProxy()
     {
-        return myProxy;
+        return proxy;
     }
 
     public void setProxy( final String url, final Integer port )
     {
-        myProxy = new Proxy( Proxy.Type.HTTP, new InetSocketAddress( url, port ) );
+        this.proxy = new Proxy( Proxy.Type.HTTP, new InetSocketAddress( url, port ) );
     }
 
     public void setProxy( final Proxy proxy )
     {
-        myProxy = proxy;
+        this.proxy = proxy;
     }
 
     public Logger getLogger()
@@ -100,20 +100,20 @@ public class Configuration
 
     public int getTimeout()
     {
-        return ( myTimeout == 0 ) ? theDefaultTimeout : myTimeout;
+        return ( timeout == 0 ) ? theDefaultTimeout : timeout;
     }
 
     public void setTimeout( final int timeout )
     {
-        myTimeout = timeout;
+        this.timeout = timeout;
     }
 
     public String getPublishableKey()
     {
-        return myPublishableKey;
+        return publishableKey;
     }
     public String getSecretKey()
     {
-        return mySecretKey;
+        return secretKey;
     }
 }
