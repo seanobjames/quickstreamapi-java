@@ -1,6 +1,6 @@
 package com.qvalent.quickstreamapi.exception;
 
-import com.qvalent.quickstreamapi.model.ErrorResponse;
+import com.qvalent.quickstreamapi.model.response.Error;
 
 public class UnexpectedException extends QuickStreamAPIException
 {
@@ -11,7 +11,7 @@ public class UnexpectedException extends QuickStreamAPIException
         super( message );
     }
 
-    public UnexpectedException( final String message, final ErrorResponse error )
+    public UnexpectedException( final String message, final Error error )
     {
         super( message + ": " + error.toString() );
     }

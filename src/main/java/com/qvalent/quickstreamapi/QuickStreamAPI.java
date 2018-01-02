@@ -29,29 +29,29 @@ import com.qvalent.quickstreamapi.util.Http;
 */
 public class QuickStreamAPI
 {
-    private final Configuration myConfiguration;
-    private final Http myHttp;
+    private final Configuration configuration;
+    private final Http http;
 
     public QuickStreamAPI( final Environment environment,
                            final String publishableKey,
                            final String secretKey )
     {
-        myConfiguration = new Configuration( environment, publishableKey, secretKey );
-        myHttp = new Http( myConfiguration );
+        configuration = new Configuration( environment, publishableKey, secretKey );
+        http = new Http( configuration );
     }
 
     public void setProxy( final String url, final Integer port )
     {
-        myConfiguration.setProxy( url, port );
+        configuration.setProxy( url, port );
     }
 
     public Configuration getConfiguration()
     {
-        return myConfiguration;
+        return configuration;
     }
 
     public SingleUseTokensAPI singleUseTokens()
     {
-        return new SingleUseTokensAPI( myConfiguration, myHttp );
+        return new SingleUseTokensAPI( configuration, http );
     }
 }

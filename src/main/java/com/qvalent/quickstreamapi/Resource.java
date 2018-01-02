@@ -7,17 +7,12 @@ import com.qvalent.quickstreamapi.util.Http;
  */
 public abstract class Resource
 {
-    protected Configuration myConfiguration;
-    protected Http myHttp;
+    protected final Configuration configuration;
+    protected final Http http;
 
     public Resource( final Configuration configuration, final Http http )
     {
-        myConfiguration = configuration;
-        myHttp = http;
-    }
-
-    public String toJSON()
-    {
-        throw new UnsupportedOperationException();
+        this.configuration = configuration;
+        this.http = http;
     }
 }

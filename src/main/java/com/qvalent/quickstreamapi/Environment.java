@@ -10,8 +10,8 @@ public class Environment
     private static final String theDevelopmentBaseURLSysEnvName = "DEV_BASE_URL";
     private static final String theDevelopmentPortSysEnvName = "DEV_PORT";
 
-    private String myEnvironmentName;
-    private String myBaseURL;
+    private String environmentName;
+    private String baseURL;
 
     // For internal QuickStream development
     public static final Environment DEVELOPMENT = new Environment( getDevBaseURL() + ":" + getDevPort(), "development" );
@@ -24,28 +24,28 @@ public class Environment
 
     public Environment( final String baseURL, final String environmentName )
     {
-        myEnvironmentName = environmentName;
-        myBaseURL = baseURL + "/rest/v" + Configuration.apiVersion();
+        this.environmentName = environmentName;
+        this.baseURL = baseURL + "/rest/v" + Configuration.apiVersion();
     }
 
     public String getEnvironmentName()
     {
-        return myEnvironmentName;
+        return environmentName;
     }
 
     public void setEnvironmentName( final String environmentName )
     {
-        myEnvironmentName = environmentName;
+        this.environmentName = environmentName;
     }
 
     public String getBaseURL()
     {
-        return myBaseURL;
+        return baseURL;
     }
 
     public void setBaseURL( final String baseURL )
     {
-        myBaseURL = baseURL;
+        this.baseURL = baseURL;
     }
 
     public static String getDevBaseURL()
@@ -75,6 +75,6 @@ public class Environment
     @Override
     public String toString()
     {
-        return "Environment [environmentName=" + myEnvironmentName + ", baseURL=" + myBaseURL + "]";
+        return "Environment [environmentName=" + environmentName + ", baseURL=" + baseURL + "]";
     }
 }
