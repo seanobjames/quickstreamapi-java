@@ -63,6 +63,8 @@ The unit tests can be run by anyone on any system. The unit tests do not test yo
 
 ## Code Coverage
 
+Code coverage is provided by [Codecov](https://codecov.io).
+
 ![Code Coverage Sunburst](https://codecov.io/gh/seanobjames/quickstreamapi-java/branch/master/graphs/sunburst.svg)
 
 ## Open Source Attribution
