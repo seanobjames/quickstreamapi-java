@@ -1,6 +1,8 @@
-# Quickstream REST API - Java Client Library [![Build Status](https://travis-ci.org/seanobjames/quickstreamapi-java.svg?branch=master)](https://travis-ci.org/seanobjames/quickstreamapi-java) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/f2b8d03bec4d482ca969c0e3f2354a93)](https://www.codacy.com/app/seanobjames/quickstreamapi-java?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=seanobjames/quickstreamapi-java&amp;utm_campaign=Badge_Grade) [![codecov](https://codecov.io/gh/seanobjames/quickstreamapi-java/branch/master/graph/badge.svg)](https://codecov.io/gh/seanobjames/quickstreamapi-java)
+# Quickstream REST API - Java Client Library 
 
 The Quickstream REST API Java library provides integration across the Quickstream platform.
+
+[![Build Status](https://travis-ci.org/seanobjames/quickstreamapi-java.svg?branch=master)](https://travis-ci.org/seanobjames/quickstreamapi-java) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/f2b8d03bec4d482ca969c0e3f2354a93)](https://www.codacy.com/app/seanobjames/quickstreamapi-java?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=seanobjames/quickstreamapi-java&amp;utm_campaign=Badge_Grade) [![codecov](https://codecov.io/gh/seanobjames/quickstreamapi-java/branch/master/graph/badge.svg)](https://codecov.io/gh/seanobjames/quickstreamapi-java)
 
 ## Dependencies
 
@@ -60,12 +62,6 @@ The resulting jar file will be produced in the director named "target".
 ## Tests
 
 The unit tests can be run by anyone on any system. The unit tests do not test your integration. 
-
-## Code Coverage
-
-Code coverage is provided by [Codecov](https://codecov.io).
-
-![Code Coverage Sunburst](https://codecov.io/gh/seanobjames/quickstreamapi-java/branch/master/graphs/sunburst.svg)
 
 ## Open Source Attribution
 
