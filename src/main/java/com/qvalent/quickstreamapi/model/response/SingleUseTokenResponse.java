@@ -3,6 +3,7 @@ package com.qvalent.quickstreamapi.model.response;
 import java.util.ArrayList;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.qvalent.quickstreamapi.exception.UnexpectedException;
 
 public class SingleUseTokenResponse
 {
@@ -34,7 +35,7 @@ public class SingleUseTokenResponse
         }
         catch ( final Exception e )
         {
-            throw new RuntimeException( e );
+            throw new UnexpectedException( "Parsing single-use-token response failed.", e );
         }
     }
 

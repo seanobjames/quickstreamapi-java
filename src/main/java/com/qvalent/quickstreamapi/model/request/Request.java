@@ -2,6 +2,7 @@ package com.qvalent.quickstreamapi.model.request;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.qvalent.quickstreamapi.exception.UnexpectedException;
 
 public abstract class Request
 {
@@ -14,7 +15,7 @@ public abstract class Request
         }
         catch ( final JsonProcessingException e )
         {
-            throw new RuntimeException( e );
+            throw new UnexpectedException( "Writing " + this.getClass().getSimpleName() + " failed.", e );
         }
     }
 }

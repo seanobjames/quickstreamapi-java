@@ -4,6 +4,7 @@ import java.net.URL;
 import java.util.List;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.qvalent.quickstreamapi.exception.UnexpectedException;
 import com.qvalent.quickstreamapi.util.Http.RequestMethod;
 
 public class Error
@@ -89,7 +90,7 @@ public class Error
         }
         catch ( final Exception e )
         {
-            throw new RuntimeException( e );
+            throw new UnexpectedException( "Parsing error response failed.", e );
         }
     }
 
