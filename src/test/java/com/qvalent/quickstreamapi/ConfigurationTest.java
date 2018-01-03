@@ -11,7 +11,7 @@ import org.junit.Test;
 public class ConfigurationTest
 {
     @Test
-    public void defaultConfigurationCreated_Success()
+    public void defaultConfigurationCreatedSuccess()
     {
         final Configuration configuration = new Configuration(
                 Environment.TEST,
@@ -33,7 +33,7 @@ public class ConfigurationTest
     }
 
     @Test
-    public void testConfigurationCreated_EnvironmentURLCorrect()
+    public void testConfigurationCreatedEnvironmentURLCorrect()
     {
         final Configuration configuration = new Configuration(
                 Environment.TEST,
@@ -43,7 +43,7 @@ public class ConfigurationTest
     }
 
     @Test
-    public void prodConfigurationCreated_EnvironmentURLCorrect()
+    public void prodConfigurationCreatedEnvironmentURLCorrect()
     {
         final Configuration configuration = new Configuration(
                 Environment.PRODUCTION,
@@ -53,7 +53,7 @@ public class ConfigurationTest
     }
 
     @Test
-    public void decConfigurationCreated_EnvironmentURLCorrect()
+    public void decConfigurationCreatedEnvironmentURLCorrect()
     {
         final Configuration configuration = new Configuration(
                 Environment.DEVELOPMENT,
