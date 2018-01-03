@@ -20,7 +20,7 @@ public class Configuration
     private Proxy proxy;
 
     private static Logger theLogger;
-    private static String theLogName = "QuickStreamAPI";
+    private static String theLogName = "QuickstreamAPI";
     public static String theLogPrefix = "[" + theLogName + "]";
 
     static
@@ -80,7 +80,7 @@ public class Configuration
 
     public void setProxy( final String url, final Integer port )
     {
-        this.proxy = new Proxy( Proxy.Type.HTTP, new InetSocketAddress( url, port ) );
+        proxy = new Proxy( Proxy.Type.HTTP, new InetSocketAddress( url, port ) );
     }
 
     public void setProxy( final Proxy proxy )
