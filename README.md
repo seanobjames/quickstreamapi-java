@@ -39,25 +39,7 @@ With Maven installed, this package can be built by running this command:
 
 `mvn package`
 
-The resulting jar file will be produced in the director named "target".
-
-### In repositories:
-
-**Not yet implemented.**
-
-`Maven Central, which should be enabled by default. No additional repositories are required.`
-
-### In dependencies:
-
-**Not yet implemented.**
-
-```xml
-<dependency>
-  <groupId>com.qvalent.quickstreamapi</groupId>
-  <artifactId>quickstreamapi-java</artifactId>
-  <version>PUT VERSION NUMBER HERE</version>
-</dependency>
-```
+The resulting jar file will be produced in the directory named "target".
 
 ## Tests
 
