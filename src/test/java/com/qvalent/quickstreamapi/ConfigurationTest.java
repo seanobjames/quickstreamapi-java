@@ -8,6 +8,8 @@ import static org.junit.matchers.JUnitMatchers.containsString;
 
 import org.junit.Test;
 
+import com.qvalent.quickstreamapi.exception.ConfigurationException;
+
 public class ConfigurationTest
 {
     @Test
@@ -53,12 +55,30 @@ public class ConfigurationTest
     }
 
     @Test
-    public void decConfigurationCreatedEnvironmentURLCorrect()
+    public void devConfigurationCreatedEnvironmentURLCorrect()
     {
         final Configuration configuration = new Configuration(
                 Environment.DEVELOPMENT,
                 "thePublishableKey",
                 "theSecretKey" );
         assertEquals( configuration.getBaseURL(), "http://localhost:7001/rest/v1" );
+    }
+
+    @Test(expected=ConfigurationException.class)
+    public void configurationCreatedWithEmptyPublishableKeyThrowsException()
+    {
+        new Configuration(
+                Environment.DEVELOPMENT,
+                "",
+                "theSecretKey" );
+    }
+
+    @Test(expected=ConfigurationException.class)
+    public void configurationCreatedWithNullSecretKeyThrowsException()
+    {
+        new Configuration(
+                Environment.DEVELOPMENT,
+                "thePublishableKey",
+                null );
     }
 }
