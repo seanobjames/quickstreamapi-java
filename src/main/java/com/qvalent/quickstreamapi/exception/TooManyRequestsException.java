@@ -2,11 +2,11 @@ package com.qvalent.quickstreamapi.exception;
 
 import com.qvalent.quickstreamapi.model.response.ValidationErrors;
 
-public class AuthorizationException extends QuickStreamAPIException
+public class TooManyRequestsException extends QuickStreamAPIException
 {
     private static final long serialVersionUID = 1L;
 
-    public AuthorizationException( final ValidationErrors errors )
+    public TooManyRequestsException( final ValidationErrors errors )
     {
         super( errors );
     }

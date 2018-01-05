@@ -7,18 +7,20 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.qvalent.quickstreamapi.exception.UnexpectedException;
 import com.qvalent.quickstreamapi.util.Http.RequestMethod;
 
-public class Error
+public class ValidationErrors
 {
     private final List<Link> links;
+    private final List<ValidationError> errors;
     private String status;
     private RequestMethod requestMethod;
     private URL requestUrl;
     private String customerMessage;
     private String developerMessage;
 
-    public Error()
+    public ValidationErrors()
     {
         links = null;
+        errors = null;
         status = null;
         requestMethod = null;
         requestUrl = null;
@@ -81,12 +83,17 @@ public class Error
         return links;
     }
 
-    public static Error from( final String json )
+    public List<ValidationError> getErrors()
+    {
+        return errors;
+    }
+
+    public static ValidationErrors from( final String json )
     {
         final ObjectMapper mapper = new ObjectMapper();
         try
         {
-            return mapper.readValue( json, Error.class );
+            return mapper.readValue( json, ValidationErrors.class );
         }
         catch ( final Exception e )
         {
@@ -97,11 +104,13 @@ public class Error
     @Override
     public String toString()
     {
-        return "Error [links=" + links
+        return "ValidationErrors [links=" + links
+                + ", errors=" + errors
                 + ", status=" + status
                 + ", requestMethod=" + requestMethod
-                + ", requestURL=" + requestUrl
+                + ", requestUrl=" + requestUrl
                 + ", customerMessage=" + customerMessage
                 + ", developerMessage=" + developerMessage + "]";
     }
+
 }

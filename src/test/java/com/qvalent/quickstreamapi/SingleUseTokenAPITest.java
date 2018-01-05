@@ -1,20 +1,24 @@
 package com.qvalent.quickstreamapi;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import com.qvalent.quickstreamapi.exception.AuthenticationException;
+import com.qvalent.quickstreamapi.exception.NotFoundException;
 import com.qvalent.quickstreamapi.model.request.CardRequest;
 import com.qvalent.quickstreamapi.model.request.CardRequest.CardRequestBuilder;
-import com.qvalent.quickstreamapi.model.response.SingleUseTokenResponse;
+import com.qvalent.quickstreamapi.model.response.Result;
+import com.qvalent.quickstreamapi.model.response.SingleUseToken;
 
 public class SingleUseTokenAPITest
 {
     private QuickstreamAPI quickstreamAPI;
     private QuickstreamAPI badCredentialsAPI;
     private CardRequest cardRequest;
+    private CardRequest badCardRequest;
 
     @Before
     public void before()
@@ -38,6 +42,14 @@ public class SingleUseTokenAPITest
             .expiryDateYear( "2050" )
             .cvn( "123" )
             .build();
+
+        badCardRequest = new CardRequestBuilder( "QUICKSTREAMDEMO" )
+                .cardholderName( null )
+                .cardNumber( "XXXXXXXXXXXXXXXX" )
+                .expiryDateMonth( "01" )
+                .expiryDateYear( "2050" )
+                .cvn( "123" )
+                .build();
     }
 
     @Test( expected=AuthenticationException.class )
@@ -46,11 +58,25 @@ public class SingleUseTokenAPITest
         badCredentialsAPI.singleUseTokens().generate( cardRequest );
     }
 
+    @Test()
+    public void generateSingleUseTokenWithBadRequest()
+    {
+        final Result<SingleUseToken> result = quickstreamAPI.singleUseTokens().generate( badCardRequest );
+        assertNotNull( result.getErrors() );
+        assertNull( result.getTarget() );
+    }
+
+    @Test( expected=NotFoundException.class )
+    public void generateSingleUseTokenWithNoCardRequest()
+    {
+        quickstreamAPI.singleUseTokens().generate( null );
+    }
+
     @Test
     public void generateSingleUseTokenSuccess()
     {
 
-        final SingleUseTokenResponse token = quickstreamAPI.singleUseTokens().generate( cardRequest );
-        assertNotNull( token.getSingleUseTokenId() );
+        final Result<SingleUseToken> result = quickstreamAPI.singleUseTokens().generate( cardRequest );
+        assertNotNull( result.getTarget().getSingleUseTokenId()  );
     }
 }

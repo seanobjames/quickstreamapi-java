@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
+import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Base64;
@@ -18,9 +19,14 @@ import org.apache.commons.lang3.StringUtils;
 import com.qvalent.quickstreamapi.Configuration;
 import com.qvalent.quickstreamapi.exception.AuthenticationException;
 import com.qvalent.quickstreamapi.exception.AuthorizationException;
+import com.qvalent.quickstreamapi.exception.DownForMaintenanceException;
+import com.qvalent.quickstreamapi.exception.ServerException;
+import com.qvalent.quickstreamapi.exception.TimeoutException;
+import com.qvalent.quickstreamapi.exception.TooManyRequestsException;
 import com.qvalent.quickstreamapi.exception.UnexpectedException;
 import com.qvalent.quickstreamapi.model.request.Request;
-import com.qvalent.quickstreamapi.model.response.Error;
+import com.qvalent.quickstreamapi.model.response.ResponseWrapper;
+import com.qvalent.quickstreamapi.model.response.ValidationErrors;
 
 public class Http
 {
@@ -41,66 +47,64 @@ public class Http
         myConfiguration = configuration;
     }
 
-    public String get( final AccessType accessType, final String url )
+    public ResponseWrapper get( final AccessType accessType, final String url )
     {
         return httpRequest( RequestMethod.GET, accessType, url, null );
     }
 
-    public String delete( final AccessType accessType, final String url )
+    public ResponseWrapper delete( final AccessType accessType, final String url )
     {
         return httpRequest( RequestMethod.DELETE, accessType, url, null );
     }
 
-    public String post( final AccessType accessType, final String url )
+    public ResponseWrapper post( final AccessType accessType, final String url )
     {
         return httpRequest( RequestMethod.POST, accessType, url, null );
     }
 
-    public String post( final AccessType accessType, final String url, final Request request )
+    public ResponseWrapper post( final AccessType accessType, final String url, final Request request )
     {
         return httpRequest( RequestMethod.POST, accessType, url, request.toJSON() );
     }
 
-    public String put( final AccessType accessType, final String url )
+    public ResponseWrapper put( final AccessType accessType, final String url )
     {
         return httpRequest( RequestMethod.PUT, accessType, url, null );
     }
 
-    public String put( final AccessType accessType, final String url, final Request request )
+    public ResponseWrapper put( final AccessType accessType, final String url, final Request request )
     {
         return httpRequest( RequestMethod.PUT, accessType, url, request.toJSON() );
     }
 
-    public String patch( final AccessType accessType, final String url )
+    public ResponseWrapper patch( final AccessType accessType, final String url )
     {
         return httpRequest( RequestMethod.PATCH, accessType, url, null );
     }
 
-    public String patch( final AccessType accessType, final String url, final Request request )
+    public ResponseWrapper patch( final AccessType accessType, final String url, final Request request )
     {
         return httpRequest( RequestMethod.PATCH, accessType, url, request.toJSON() );
     }
 
-    private String httpRequest( final RequestMethod requestMethod,
-                                final AccessType accessType,
-                                final String url,
-                                final String postBody )
+    private ResponseWrapper httpRequest( final RequestMethod requestMethod,
+                                    final AccessType accessType,
+                                    final String url,
+                                    final String postBody )
     {
         HttpURLConnection connection = null;
         final String contentType = "application/json";
-        String response = null;
+        ResponseWrapper response = null;
 
         try
         {
             connection = buildConnection( requestMethod, accessType, url, contentType );
             final Logger logger = myConfiguration.getLogger();
-            if ( postBody != null )
-            {
-                logger.log( Level.FINE, sanitiseRequestBodyForLogging( postBody ) );
-            }
 
             if ( postBody != null )
             {
+                logger.log( Level.FINE, sanitiseRequestBodyForLogging( postBody ) );
+
                 OutputStream outputStream = null;
                 try
                 {
@@ -121,7 +125,7 @@ public class Http
             try ( InputStream inputStream =
                     (connection.getResponseCode() == 422) ? connection.getErrorStream() : connection.getInputStream() )
             {
-                response = StringUtil.inputStreamToString( inputStream );
+                final String jsonResponse = StringUtil.inputStreamToString( inputStream );
 
                 logger.log(
                         Level.INFO,
@@ -132,16 +136,22 @@ public class Http
                         Configuration.theLogPrefix + " [{0}]] {1} {2} {3}",
                         new Object[] { getCurrentTime(), requestMethod.toString(), url, connection.getResponseCode() } );
 
-                if( response != null )
+                if( jsonResponse != null )
                 {
-                    logger.log( Level.FINE, sanitiseRequestBodyForLogging( response ) );
+                    logger.log( Level.FINE, sanitiseRequestBodyForLogging( jsonResponse ) );
                 }
 
-                if( StringUtils.isEmpty( response ) )
+                if( StringUtils.isEmpty( jsonResponse ) )
                 {
                     return null;
                 }
+
+                response = new ResponseWrapper( jsonResponse, connection.getResponseCode() );
             }
+        }
+        catch( final SocketTimeoutException e )
+        {
+            throw new TimeoutException( e.getMessage(), e );
         }
         catch( final IOException e )
         {
@@ -162,22 +172,42 @@ public class Http
     {
         if( isErrorCode( connection.getResponseCode() ) )
         {
-            Error error = null;
+            ValidationErrors errors = null;
             try( InputStream inputStream = connection.getErrorStream() )
             {
-                error = Error.from( StringUtil.inputStreamToString( inputStream ) );
+                errors = ValidationErrors.from( StringUtil.inputStreamToString( inputStream ) );
             }
+
+            final Logger logger = myConfiguration.getLogger();
+
+            logger.log(
+                    Level.INFO,
+                    Configuration.theLogPrefix + " [{0}]] {1} {2}",
+                    new Object[] { getCurrentTime(), errors.getStatus(), errors.getRequestUrl() } );
+            logger.log(
+                    Level.FINE,
+                    Configuration.theLogPrefix + " [{0}]] {1} {2} {3}",
+                    new Object[] {
+                            getCurrentTime(),
+                            errors.getStatus(),
+                            errors.getRequestMethod().name() + " " + errors.getRequestUrl(),
+                            errors.getDeveloperMessage() } );
 
             switch( connection.getResponseCode() )
             {
-                // TODO other exception types for common error responses
                 case 401 :
-                    throw new AuthenticationException( error );
+                    throw new AuthenticationException( errors );
                 case 403 :
-                    throw new AuthorizationException( error );
+                    throw new AuthorizationException( errors );
+                case 429 :
+                    throw new TooManyRequestsException( errors );
+                case 500 :
+                    throw new ServerException( errors );
+                case 503 :
+                    throw new DownForMaintenanceException( errors );
                 default:
                     throw new UnexpectedException(
-                            "Unexpected HTTP Response " + connection.getResponseCode(), error );
+                            "Unexpected HTTP Response " + connection.getResponseCode(), errors );
             }
         }
     }
@@ -226,7 +256,7 @@ public class Http
 
     private boolean isErrorCode( final int responseCode )
     {
-        return responseCode != 200 && responseCode != 201 && responseCode != 422;
+        return responseCode != 200 && responseCode != 201 && responseCode != 204 && responseCode != 422;
     }
 
     private String sanitiseRequestBodyForLogging( final String requestBody )

@@ -1,6 +1,6 @@
 package com.qvalent.quickstreamapi.exception;
 
-import com.qvalent.quickstreamapi.model.response.Error;
+import com.qvalent.quickstreamapi.model.response.ValidationErrors;
 
 public class QuickStreamAPIException extends RuntimeException
 {
@@ -16,9 +16,9 @@ public class QuickStreamAPIException extends RuntimeException
         super( message );
     }
 
-    public QuickStreamAPIException( final Error error )
+    public QuickStreamAPIException( final ValidationErrors errors )
     {
-        super( error.getDeveloperMessage() );
+        super( errors.getDeveloperMessage() );
     }
 
     public QuickStreamAPIException()
