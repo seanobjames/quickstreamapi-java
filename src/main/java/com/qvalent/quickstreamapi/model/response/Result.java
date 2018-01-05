@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class Result<T>
 {
-    private Error errors;
+    private ValidationErrors errors;
     private String json;
     private T target;
 
@@ -33,11 +33,11 @@ public class Result<T>
         }
         else
         {
-            this.errors = response.getError();
+            this.errors = response.getErrors();
         }
     }
 
-    public Error getErrors()
+    public ValidationErrors getErrors()
     {
         return errors;
     }

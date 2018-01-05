@@ -20,14 +20,13 @@ import com.qvalent.quickstreamapi.Configuration;
 import com.qvalent.quickstreamapi.exception.AuthenticationException;
 import com.qvalent.quickstreamapi.exception.AuthorizationException;
 import com.qvalent.quickstreamapi.exception.DownForMaintenanceException;
-import com.qvalent.quickstreamapi.exception.InvalidRequestException;
 import com.qvalent.quickstreamapi.exception.ServerException;
 import com.qvalent.quickstreamapi.exception.TimeoutException;
 import com.qvalent.quickstreamapi.exception.TooManyRequestsException;
 import com.qvalent.quickstreamapi.exception.UnexpectedException;
 import com.qvalent.quickstreamapi.model.request.Request;
-import com.qvalent.quickstreamapi.model.response.Error;
 import com.qvalent.quickstreamapi.model.response.ResponseWrapper;
+import com.qvalent.quickstreamapi.model.response.ValidationErrors;
 
 public class Http
 {
@@ -149,11 +148,6 @@ public class Http
 
                 response = new ResponseWrapper( jsonResponse, connection.getResponseCode() );
             }
-
-            if( response.isValidationError() )
-            {
-                throw new InvalidRequestException( response.getError() );
-            }
         }
         catch( final SocketTimeoutException e )
         {
@@ -178,10 +172,10 @@ public class Http
     {
         if( isErrorCode( connection.getResponseCode() ) )
         {
-            Error error = null;
+            ValidationErrors errors = null;
             try( InputStream inputStream = connection.getErrorStream() )
             {
-                error = Error.from( StringUtil.inputStreamToString( inputStream ) );
+                errors = ValidationErrors.from( StringUtil.inputStreamToString( inputStream ) );
             }
 
             final Logger logger = myConfiguration.getLogger();
@@ -189,31 +183,31 @@ public class Http
             logger.log(
                     Level.INFO,
                     Configuration.theLogPrefix + " [{0}]] {1} {2}",
-                    new Object[] { getCurrentTime(), error.getStatus(), error.getRequestUrl() } );
+                    new Object[] { getCurrentTime(), errors.getStatus(), errors.getRequestUrl() } );
             logger.log(
                     Level.FINE,
                     Configuration.theLogPrefix + " [{0}]] {1} {2} {3}",
                     new Object[] {
                             getCurrentTime(),
-                            error.getStatus(),
-                            error.getRequestMethod().name() + " " + error.getRequestUrl(),
-                            error.getDeveloperMessage() } );
+                            errors.getStatus(),
+                            errors.getRequestMethod().name() + " " + errors.getRequestUrl(),
+                            errors.getDeveloperMessage() } );
 
             switch( connection.getResponseCode() )
             {
                 case 401 :
-                    throw new AuthenticationException( error );
+                    throw new AuthenticationException( errors );
                 case 403 :
-                    throw new AuthorizationException( error );
+                    throw new AuthorizationException( errors );
                 case 429 :
-                    throw new TooManyRequestsException( error );
+                    throw new TooManyRequestsException( errors );
                 case 500 :
-                    throw new ServerException( error );
+                    throw new ServerException( errors );
                 case 503 :
-                    throw new DownForMaintenanceException( error );
+                    throw new DownForMaintenanceException( errors );
                 default:
                     throw new UnexpectedException(
-                            "Unexpected HTTP Response " + connection.getResponseCode(), error );
+                            "Unexpected HTTP Response " + connection.getResponseCode(), errors );
             }
         }
     }

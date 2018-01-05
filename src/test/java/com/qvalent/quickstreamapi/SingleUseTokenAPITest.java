@@ -1,6 +1,7 @@
 package com.qvalent.quickstreamapi;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -17,6 +18,7 @@ public class SingleUseTokenAPITest
     private QuickstreamAPI quickstreamAPI;
     private QuickstreamAPI badCredentialsAPI;
     private CardRequest cardRequest;
+    private CardRequest badCardRequest;
 
     @Before
     public void before()
@@ -40,12 +42,28 @@ public class SingleUseTokenAPITest
             .expiryDateYear( "2050" )
             .cvn( "123" )
             .build();
+
+        badCardRequest = new CardRequestBuilder( "QUICKSTREAMDEMO" )
+                .cardholderName( null )
+                .cardNumber( "XXXXXXXXXXXXXXXX" )
+                .expiryDateMonth( "01" )
+                .expiryDateYear( "2050" )
+                .cvn( "123" )
+                .build();
     }
 
     @Test( expected=AuthenticationException.class )
     public void generateSingleUseTokenWithIncorrectCredentials()
     {
         badCredentialsAPI.singleUseTokens().generate( cardRequest );
+    }
+
+    @Test()
+    public void generateSingleUseTokenWithBadRequest()
+    {
+        final Result<SingleUseToken> result = quickstreamAPI.singleUseTokens().generate( badCardRequest );
+        assertNotNull( result.getErrors() );
+        assertNull( result.getTarget() );
     }
 
     @Test( expected=NotFoundException.class )
