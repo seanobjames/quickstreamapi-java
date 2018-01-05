@@ -6,9 +6,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.qvalent.quickstreamapi.exception.AuthenticationException;
+import com.qvalent.quickstreamapi.exception.NotFoundException;
 import com.qvalent.quickstreamapi.model.request.CardRequest;
 import com.qvalent.quickstreamapi.model.request.CardRequest.CardRequestBuilder;
-import com.qvalent.quickstreamapi.model.response.SingleUseTokenResponse;
+import com.qvalent.quickstreamapi.model.response.Result;
+import com.qvalent.quickstreamapi.model.response.SingleUseToken;
 
 public class SingleUseTokenAPITest
 {
@@ -46,11 +48,17 @@ public class SingleUseTokenAPITest
         badCredentialsAPI.singleUseTokens().generate( cardRequest );
     }
 
+    @Test( expected=NotFoundException.class )
+    public void generateSingleUseTokenWithNoCardRequest()
+    {
+        quickstreamAPI.singleUseTokens().generate( null );
+    }
+
     @Test
     public void generateSingleUseTokenSuccess()
     {
 
-        final SingleUseTokenResponse token = quickstreamAPI.singleUseTokens().generate( cardRequest );
-        assertNotNull( token.getSingleUseTokenId() );
+        final Result<SingleUseToken> result = quickstreamAPI.singleUseTokens().generate( cardRequest );
+        assertNotNull( result.getTarget().getSingleUseTokenId()  );
     }
 }
