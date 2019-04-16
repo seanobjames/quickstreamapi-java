@@ -1,9 +1,9 @@
 package com.qvalent.quickstreamapi.model.request;
 
-public class CardRequest extends Request
+import com.qvalent.quickstreamapi.model.common.AccountType;
+
+public class CardRequest extends SingleUseTokenRequest
 {
-    private final String supplierBusinessCode;
-    private final AccountType accountType;
     private final String cardholderName;
     private final String cardNumber;
     private final String expiryDateMonth;
@@ -12,23 +12,12 @@ public class CardRequest extends Request
 
     private CardRequest( final CardRequestBuilder builder )
     {
-        supplierBusinessCode = builder.supplierBusinessCode;
-        accountType = AccountType.CREDIT_CARD;
+        super( builder.supplierBusinessCode, AccountType.CREDIT_CARD );
         cardholderName = builder.cardholderName;
         cardNumber = builder.cardNumber;
         expiryDateMonth = builder.expiryDateMonth;
         expiryDateYear = builder.expiryDateYear;
         cvn = builder.cvn;
-    }
-
-    public String getSupplierBusinessCode()
-    {
-        return supplierBusinessCode;
-    }
-
-    public AccountType getAccountType()
-    {
-        return accountType;
     }
 
     public String getCardholderName()

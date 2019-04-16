@@ -1,4 +1,4 @@
-package com.qvalent.quickstreamapi.model.request;
+package com.qvalent.quickstreamapi.model.common;
 
 public enum AccountType
 {

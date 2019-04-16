@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
@@ -25,6 +26,7 @@ import com.qvalent.quickstreamapi.exception.TimeoutException;
 import com.qvalent.quickstreamapi.exception.TooManyRequestsException;
 import com.qvalent.quickstreamapi.exception.UnexpectedException;
 import com.qvalent.quickstreamapi.model.request.Request;
+import com.qvalent.quickstreamapi.model.response.Link;
 import com.qvalent.quickstreamapi.model.response.ResponseWrapper;
 import com.qvalent.quickstreamapi.model.response.ValidationErrors;
 
@@ -49,47 +51,64 @@ public class Http
 
     public ResponseWrapper get( final AccessType accessType, final String url )
     {
-        return httpRequest( RequestMethod.GET, accessType, url, null );
+        return httpRequest( RequestMethod.GET, accessType, getURL( url ), null );
+    }
+
+    public ResponseWrapper get( final AccessType accessType, final Link link )
+    {
+        return httpRequest( RequestMethod.GET, accessType, link.getHref(), null );
     }
 
     public ResponseWrapper delete( final AccessType accessType, final String url )
     {
-        return httpRequest( RequestMethod.DELETE, accessType, url, null );
+        return httpRequest( RequestMethod.DELETE, accessType, getURL( url ), null );
     }
 
     public ResponseWrapper post( final AccessType accessType, final String url )
     {
-        return httpRequest( RequestMethod.POST, accessType, url, null );
+        return httpRequest( RequestMethod.POST, accessType, getURL( url ), null );
     }
 
     public ResponseWrapper post( final AccessType accessType, final String url, final Request request )
     {
-        return httpRequest( RequestMethod.POST, accessType, url, request.toJSON() );
+        return httpRequest( RequestMethod.POST, accessType, getURL( url ), request.toJSON() );
     }
 
-    public ResponseWrapper put( final AccessType accessType, final String url )
+    public ResponseWrapper put( final AccessType accessType, final String url ) throws MalformedURLException
     {
-        return httpRequest( RequestMethod.PUT, accessType, url, null );
+        return httpRequest( RequestMethod.PUT, accessType, getURL( url ), null );
     }
 
     public ResponseWrapper put( final AccessType accessType, final String url, final Request request )
     {
-        return httpRequest( RequestMethod.PUT, accessType, url, request.toJSON() );
+        return httpRequest( RequestMethod.PUT, accessType, getURL( url ), request.toJSON() );
     }
 
     public ResponseWrapper patch( final AccessType accessType, final String url )
     {
-        return httpRequest( RequestMethod.PATCH, accessType, url, null );
+        return httpRequest( RequestMethod.PATCH, accessType, getURL( url ), null );
     }
 
     public ResponseWrapper patch( final AccessType accessType, final String url, final Request request )
     {
-        return httpRequest( RequestMethod.PATCH, accessType, url, request.toJSON() );
+        return httpRequest( RequestMethod.PATCH, accessType, getURL( url ), request.toJSON() );
+    }
+
+    private URL getURL( final String path )
+    {
+        try
+        {
+            return new URL( myConfiguration.getBaseURL() + path );
+        }
+        catch ( final MalformedURLException e )
+        {
+            throw new RuntimeException( e );
+        }
     }
 
     private ResponseWrapper httpRequest( final RequestMethod requestMethod,
                                     final AccessType accessType,
-                                    final String url,
+                                    final URL url,
                                     final String postBody )
     {
         HttpURLConnection connection = null;
@@ -214,10 +233,9 @@ public class Http
 
     private HttpURLConnection buildConnection( final RequestMethod requestMethod,
                                                final AccessType accessType,
-                                               final String urlString,
+                                               final URL url,
                                                final String contentType ) throws IOException
     {
-        final URL url = new URL(myConfiguration.getBaseURL() + urlString);
         HttpURLConnection connection;
         if ( myConfiguration.usesProxy() )
         {
@@ -234,7 +252,11 @@ public class Http
                 "User-Agent",
                 "QuickStream REST API - Java Client Library " + Configuration.clientLibraryVersion() );
         connection.addRequestProperty( "Authorization", getAuthorizationHeader( accessType ) );
-        connection.setRequestProperty( "Content-Type", contentType );
+
+        if( requestMethod != RequestMethod.GET )
+        {
+            connection.setRequestProperty( "Content-Type", contentType );
+        }
 
         connection.setDoOutput( true );
         connection.setReadTimeout( myConfiguration.getTimeout() );

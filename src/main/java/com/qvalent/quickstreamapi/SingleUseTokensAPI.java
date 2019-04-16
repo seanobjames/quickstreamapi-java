@@ -1,7 +1,7 @@
 package com.qvalent.quickstreamapi;
 
 import com.qvalent.quickstreamapi.exception.NotFoundException;
-import com.qvalent.quickstreamapi.model.request.CardRequest;
+import com.qvalent.quickstreamapi.model.request.SingleUseTokenRequest;
 import com.qvalent.quickstreamapi.model.response.ResponseWrapper;
 import com.qvalent.quickstreamapi.model.response.Result;
 import com.qvalent.quickstreamapi.model.response.SingleUseToken;
@@ -15,7 +15,7 @@ public class SingleUseTokensAPI extends Resource
         super( configuration, http );
     }
 
-    public Result<SingleUseToken> generate( final CardRequest request )
+    public Result<SingleUseToken> generate( final SingleUseTokenRequest request )
     {
         if( request == null )
         {

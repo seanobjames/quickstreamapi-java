@@ -1,6 +1,7 @@
 package com.qvalent.quickstreamapi.model.response;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -9,8 +10,8 @@ import com.qvalent.quickstreamapi.util.Http.RequestMethod;
 
 public class ValidationErrors
 {
-    private final List<Link> links;
-    private final List<ValidationError> errors;
+    private final Links links;
+    private final ArrayList<ValidationError> errors;
     private String status;
     private RequestMethod requestMethod;
     private URL requestUrl;
@@ -78,7 +79,7 @@ public class ValidationErrors
         this.developerMessage = developerMessage;
     }
 
-    public List<Link> getLinks()
+    public Links getLinks()
     {
         return links;
     }

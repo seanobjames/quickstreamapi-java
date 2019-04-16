@@ -57,4 +57,14 @@ public class QuickstreamAPI
     {
         return new SingleUseTokensAPI( configuration, http );
     }
+
+    public RootAPI root()
+    {
+        return new RootAPI( configuration, http );
+    }
+
+    public BusinessesAPI businesses()
+    {
+        return new BusinessesAPI( configuration, http );
+    }
 }

@@ -31,7 +31,6 @@ public class Configuration
 
     public static String clientLibraryVersion()
     {
-        // TODO read from a properties file set on the build server.
         return "0.1";
     }
 
