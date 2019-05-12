@@ -10,4 +10,9 @@ public class InvalidRequestException extends QuickStreamAPIException
     {
         super( errors );
     }
+
+    public InvalidRequestException()
+    {
+        super();
+    }
 }

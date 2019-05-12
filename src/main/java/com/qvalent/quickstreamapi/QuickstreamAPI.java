@@ -67,4 +67,14 @@ public class QuickstreamAPI
     {
         return new BusinessesAPI( configuration, http );
     }
+
+    public ApiKeysAPI apiKeys()
+    {
+        return new ApiKeysAPI( configuration, http );
+    }
+
+    public CreditCardsAPI creditCards()
+    {
+        return new CreditCardsAPI( configuration, http );
+    }
 }
