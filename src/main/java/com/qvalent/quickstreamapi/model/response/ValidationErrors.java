@@ -12,11 +12,12 @@ public class ValidationErrors
 {
     private final Links links;
     private final ArrayList<ValidationError> errors;
-    private String status;
-    private RequestMethod requestMethod;
-    private URL requestUrl;
-    private String customerMessage;
-    private String developerMessage;
+    private final String status;
+    private final RequestMethod requestMethod;
+    private final URL requestUrl;
+    private final String customerMessage;
+    private final String developerMessage;
+    private final String traceCode;
 
     public ValidationErrors()
     {
@@ -27,6 +28,7 @@ public class ValidationErrors
         requestUrl = null;
         customerMessage = null;
         developerMessage = null;
+        traceCode = null;
     }
 
     public String getStatus()
@@ -34,19 +36,9 @@ public class ValidationErrors
         return status;
     }
 
-    public void setStatus( final String status )
-    {
-        this.status = status;
-    }
-
     public RequestMethod getRequestMethod()
     {
         return requestMethod;
-    }
-
-    public void setRequestMethod( final RequestMethod requestMethod )
-    {
-        this.requestMethod = requestMethod;
     }
 
     public URL getRequestUrl()
@@ -54,29 +46,14 @@ public class ValidationErrors
         return requestUrl;
     }
 
-    public void setRequestUrl( final URL requestUrl )
-    {
-        this.requestUrl = requestUrl;
-    }
-
     public String getCustomerMessage()
     {
         return customerMessage;
     }
 
-    public void setCustomerMessage( final String customerMessage )
-    {
-        this.customerMessage = customerMessage;
-    }
-
     public String getDeveloperMessage()
     {
         return developerMessage;
-    }
-
-    public void setDeveloperMessage( final String developerMessage )
-    {
-        this.developerMessage = developerMessage;
     }
 
     public Links getLinks()
@@ -87,6 +64,11 @@ public class ValidationErrors
     public List<ValidationError> getErrors()
     {
         return errors;
+    }
+
+    public String getTraceCode()
+    {
+        return traceCode;
     }
 
     public static ValidationErrors from( final String json )
@@ -111,7 +93,8 @@ public class ValidationErrors
                 + ", requestMethod=" + requestMethod
                 + ", requestUrl=" + requestUrl
                 + ", customerMessage=" + customerMessage
-                + ", developerMessage=" + developerMessage + "]";
+                + ", developerMessage=" + developerMessage
+                + ", traceCode=" + traceCode+ "]";
     }
 
 }

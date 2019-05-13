@@ -1,13 +1,11 @@
 package com.qvalent.quickstreamapi.model.response;
 
-import java.time.LocalDateTime;
-
 public class ApiKey
 {
     private final Links links;
     private final String keyName;
     private final String key;
-    private final LocalDateTime expiryDate;
+    private final String expiryDate;
 
     public ApiKey()
     {
@@ -32,7 +30,7 @@ public class ApiKey
         return key;
     }
 
-    public LocalDateTime getExpiryDate()
+    public String getExpiryDate()
     {
         return expiryDate;
     }

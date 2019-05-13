@@ -2,7 +2,7 @@ package com.qvalent.quickstreamapi;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.qvalent.quickstreamapi.exception.InvalidRequestException;
+import com.qvalent.quickstreamapi.exception.NotFoundException;
 import com.qvalent.quickstreamapi.model.response.BusinessCardScheme;
 import com.qvalent.quickstreamapi.model.response.ResponseWrapper;
 import com.qvalent.quickstreamapi.model.response.Result;
@@ -20,7 +20,7 @@ public class CreditCardsAPI extends Resource
     {
         if( StringUtils.length( cardBin )  != 6 )
         {
-            throw new InvalidRequestException();
+            throw new NotFoundException();
         }
 
         final ResponseWrapper response = http.get( AccessType.PUBLISHABLE_KEY, "/credit-cards/card-schemes/" + cardBin );

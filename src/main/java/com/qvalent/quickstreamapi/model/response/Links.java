@@ -11,6 +11,6 @@ public class Links extends ArrayList<Link>
         return stream()
                 .filter( link -> link.getRel().equals( rel ) )
                 .findFirst()
-                .get();
+                .orElse( null );
     }
 }

@@ -23,9 +23,9 @@ public class QuickstreamAPIExample
     final CardRequest cardRequest = new CardRequestBuilder( "theSupplierCode" )
             .cardNumber( "4242424242424242" ).expiryDateMonth( "01" ).expiryDateYear( "2050" ).build()
             
-    final SingleUseTokenResponse token = quickstreamAPI.singleUseTokens().generate( cardRequest );
+    final Result<SingleUseToken> result = quickstreamAPI.singleUseTokens().generate( cardRequest );
     
-    System.out.print( "Single Use Token Id: " + token.getSingleUseTokenId() );
+    System.out.print( "Single Use Token Id: " + result.getTarget().getSingleUseTokenId() );
 }
 ```
 

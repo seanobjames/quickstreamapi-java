@@ -77,4 +77,9 @@ public class QuickstreamAPI
     {
         return new CreditCardsAPI( configuration, http );
     }
+
+    public CustomersAPI customers()
+    {
+        return new CustomersAPI( configuration, http );
+    }
 }
