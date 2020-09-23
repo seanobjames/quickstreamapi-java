@@ -1,6 +1,6 @@
 package com.qvalent.quickstreamapi.model.response;
 
-public class CreditCard
+public class CreditCard extends CustomerAccount
 {
     private final String cardNumber;
     private final String expiryDateMonth;
@@ -74,5 +74,4 @@ public class CreditCard
                 + ", surchargePercentage=" + surchargePercentage
                 + ", maskedCardNumber4Digits=" + maskedCardNumber4Digits + "]";
     }
-
 }

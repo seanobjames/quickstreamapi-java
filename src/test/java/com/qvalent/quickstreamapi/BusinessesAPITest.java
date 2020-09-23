@@ -13,7 +13,6 @@ import com.qvalent.quickstreamapi.model.response.BusinessCardSchemes;
 import com.qvalent.quickstreamapi.model.response.BusinessCardSurcharge;
 import com.qvalent.quickstreamapi.model.response.Businesses;
 import com.qvalent.quickstreamapi.model.response.CardScheme;
-import com.qvalent.quickstreamapi.model.response.Link;
 import com.qvalent.quickstreamapi.model.response.Result;
 
 public class BusinessesAPITest
@@ -24,11 +23,7 @@ public class BusinessesAPITest
     @Before
     public void before()
     {
-        quickstreamAPI = new QuickstreamAPI(
-            Environment.PRODUCTION,
-            "QUICKSTREAMDEMO_PUB",
-            "QUICKSTREAMDEMO_SEC"
-        );
+        quickstreamAPI = new QuickstreamAPI();
 
         cardSurchargeRequest = new CardSurchargeRequestBuilder()
                 .cardNumber( "4242424242424242" )
@@ -40,7 +35,7 @@ public class BusinessesAPITest
     {
         final Result<BusinessCardSchemes> result = quickstreamAPI.businesses().listAcceptedCards( "QUICKSTREAMDEMO" );
         assertNotNull( result.getTarget().getData() );
-        assertEquals( 6,  result.getTarget().getData().size() );
+        assertEquals( 5,  result.getTarget().getData().size() );
     }
 
     @Test
@@ -58,24 +53,32 @@ public class BusinessesAPITest
     }
 
     @Test
+    public void getBusinesses_noInfiniteLoop()
+    {
+        final Result<Businesses> result = quickstreamAPI.businesses().list();
+        Business business = null;
+        for( final Business currentBusiness : result.getTarget() )
+        {
+            business = currentBusiness;
+        }
+
+        assertNotNull( business );
+    }
+
+    @Test
     public void getBusinesses()
     {
-        Result<Businesses> result = quickstreamAPI.businesses().list();
+        final Result<Businesses> result = quickstreamAPI.businesses().list();
         Business business = null;
-        while( business == null )
+        for( final Business currentBusiness : result.getTarget() )
         {
-            business = result.getTarget().getData()
-                .stream()
-                .filter( b -> b.getSupplierBusinessCode().equals( "QUICKSTREAMDEMO" ) )
-                .findFirst()
-                .orElse( null );
-
-            final Link nextLink = result.getTarget().getLinks().getLink( "next" );
-            if( business == null && nextLink != null )
+            if( currentBusiness.getSupplierBusinessCode().equals( "QUICKSTREAMDEMO" ) )
             {
-                result = quickstreamAPI.businesses().list( nextLink );
+                business = currentBusiness;
+                break;
             }
         }
+
         assertNotNull( business );
         assertEquals( "QUICKSTREAMDEMO",  business.getSupplierBusinessCode() );
     }

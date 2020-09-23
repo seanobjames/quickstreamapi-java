@@ -35,6 +35,12 @@ public class QuickstreamAPI
     private final Configuration configuration;
     private final Http http;
 
+    public QuickstreamAPI()
+    {
+        configuration = new Configuration( Environment.PRODUCTION, "QUICKSTREAMDEMO_PUB", "QUICKSTREAMDEMO_SEC" );
+        http = new Http( configuration );
+    }
+
     public QuickstreamAPI( final Environment environment,
                            final String publishableKey,
                            final String secretKey )

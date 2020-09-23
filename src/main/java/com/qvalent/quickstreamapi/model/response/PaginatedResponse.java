@@ -23,24 +23,24 @@ public class PaginatedResponse<T>
         return data;
     }
 
-    public Link nextPage()
+    private Link getLink( final String target )
     {
         Link nextLink = null;
         if( links != null )
         {
-            nextLink = links.getLink( "next" );
+            nextLink = links.getLink( target );
         }
         return nextLink;
     }
 
+    public Link nextPage()
+    {
+        return getLink( "next" );
+    }
+
     public Link previousPage()
     {
-        Link nextLink = null;
-        if( links != null )
-        {
-            nextLink = links.getLink( "prev" );
-        }
-        return nextLink;
+        return getLink( "prev" );
     }
 
     @Override
@@ -50,3 +50,4 @@ public class PaginatedResponse<T>
                 + ", data=" + data + "]";
     }
 }
+

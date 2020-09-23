@@ -32,11 +32,7 @@ public class SingleUseTokenAPITest
             "secretKey"
         );
 
-        quickstreamAPI = new QuickstreamAPI(
-            Environment.PRODUCTION,
-            "QUICKSTREAMDEMO_PUB",
-            "QUICKSTREAMDEMO_SEC"
-        );
+        quickstreamAPI = new QuickstreamAPI();
 
         cardRequest = new CardRequestBuilder( "QUICKSTREAMDEMO" )
             .cardholderName( null )

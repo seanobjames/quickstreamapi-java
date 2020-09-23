@@ -6,6 +6,8 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 
 import com.qvalent.quickstreamapi.exception.NotFoundException;
+import com.qvalent.quickstreamapi.model.request.CustomerRequest;
+import com.qvalent.quickstreamapi.model.request.UpdateStatusRequest;
 import com.qvalent.quickstreamapi.model.response.Customer;
 import com.qvalent.quickstreamapi.model.response.Customers;
 import com.qvalent.quickstreamapi.model.response.Link;
@@ -45,6 +47,17 @@ public class CustomersAPI extends Resource
         return new Result<Customers>( response, Customers.class );
     }
 
+    public Result<Customers> listAccounts( final String customerId )
+    {
+        if( StringUtils.isEmpty( customerId ) )
+        {
+            throw new NotFoundException();
+        }
+
+        final ResponseWrapper response = http.get( AccessType.SECRET_KEY, "/customers/" + customerId + "/accounts" );
+        return new Result<Customers>( response, Customers.class );
+    }
+
     public Result<Customers> search( final String customerNumber,
                                      final String customerName,
                                      final String customerEmail )
@@ -62,8 +75,43 @@ public class CustomersAPI extends Resource
             parameters.put( "customerName", customerName );
             parameters.put( "emailAddress", customerEmail );
 
-            final ResponseWrapper response = http.get( AccessType.SECRET_KEY, "/customers" + StringUtil.getQueryString( parameters ) );
+            final ResponseWrapper response = http.get(
+                    AccessType.SECRET_KEY,
+                    "/customers" + StringUtil.getQueryString( parameters ) );
             return new Result<Customers>( response, Customers.class );
         }
+    }
+
+    public Result<Customer> create( final CustomerRequest customerRequest )
+    {
+        if( customerRequest == null || StringUtils.isEmpty( customerRequest.getCustomerNumber() ) )
+        {
+            throw new NotFoundException();
+        }
+
+        final ResponseWrapper response = http.post( AccessType.SECRET_KEY, "/customers", customerRequest );
+        return new Result<Customer>( response, Customer.class );
+    }
+
+    public Result<Customer> update( final String customerId, final CustomerRequest customerRequest )
+    {
+        if( customerRequest == null || StringUtils.isEmpty( customerId ) )
+        {
+            throw new NotFoundException();
+        }
+
+        final ResponseWrapper response = http.put( AccessType.SECRET_KEY, "/customers/" + customerId, customerRequest );
+        return new Result<Customer>( response, Customer.class );
+    }
+
+    public Result<Customer> updateStatus( final String customerId, final UpdateStatusRequest updateStatusRequest )
+    {
+        if( updateStatusRequest == null || StringUtils.isEmpty( customerId ) )
+        {
+            throw new NotFoundException();
+        }
+
+        final ResponseWrapper response = http.put( AccessType.SECRET_KEY, "/customers/" + customerId, updateStatusRequest );
+        return new Result<Customer>( response, Customer.class );
     }
 }

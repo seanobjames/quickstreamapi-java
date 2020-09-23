@@ -15,11 +15,7 @@ public class RootAPITest
     @Before
     public void before()
     {
-        quickstreamAPI = new QuickstreamAPI(
-            Environment.PRODUCTION,
-            "QUICKSTREAMDEMO_PUB",
-            "QUICKSTREAMDEMO_SEC"
-        );
+        quickstreamAPI = new QuickstreamAPI();
     }
 
     @Test

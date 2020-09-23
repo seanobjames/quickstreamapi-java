@@ -1,6 +1,6 @@
 package com.qvalent.quickstreamapi.model.response;
 
-public class BankAccount
+public class BankAccount extends CustomerAccount
 {
     private final String accountName;
     private final String bsb;
@@ -33,8 +33,7 @@ public class BankAccount
     {
         return "BankAccount [accountName=" + accountName
                 + ", bsb=" + bsb
-                + ", accountNumber=" + accountNumber + "]";
+                + ", accountNumber=" + accountNumber + "]"
+                + ", " + super.toString();
     }
-
-
 }

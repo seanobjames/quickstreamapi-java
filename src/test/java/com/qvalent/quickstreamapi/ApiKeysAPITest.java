@@ -1,6 +1,6 @@
 package com.qvalent.quickstreamapi;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -15,17 +15,13 @@ public class ApiKeysAPITest
     @Before
     public void before()
     {
-        quickstreamAPI = new QuickstreamAPI(
-            Environment.PRODUCTION,
-            "QUICKSTREAMDEMO_PUB",
-            "QUICKSTREAMDEMO_SEC"
-        );
+        quickstreamAPI = new QuickstreamAPI();
     }
 
     @Test
     public void getLatestApiKey()
     {
         final Result<ApiKey> result = quickstreamAPI.apiKeys().getLatest();
-        assertEquals( "QUICKSTREAMDEMO_SEC", result.getTarget().getKeyName() );
+        assertNotNull( result.getTarget().getKeyName() );
     }
 }

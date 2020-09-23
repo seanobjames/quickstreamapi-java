@@ -107,9 +107,9 @@ public class Http
     }
 
     private ResponseWrapper httpRequest( final RequestMethod requestMethod,
-                                    final AccessType accessType,
-                                    final URL url,
-                                    final String postBody )
+                                         final AccessType accessType,
+                                         final URL url,
+                                         final String postBody )
     {
         HttpURLConnection connection = null;
         final String contentType = "application/json";
@@ -122,8 +122,6 @@ public class Http
 
             if ( postBody != null )
             {
-                logger.log( Level.FINE, sanitiseRequestBodyForLogging( postBody ) );
-
                 OutputStream outputStream = null;
                 try
                 {
@@ -148,16 +146,12 @@ public class Http
 
                 logger.log(
                         Level.INFO,
-                        Configuration.theLogPrefix + " [{0}]] {1} {2}",
-                        new Object[] { getCurrentTime(), requestMethod.toString(), url } );
-                logger.log(
-                        Level.FINE,
-                        Configuration.theLogPrefix + " [{0}]] {1} {2} {3}",
-                        new Object[] { getCurrentTime(), requestMethod.toString(), url, connection.getResponseCode() } );
+                        Configuration.theLogPrefix + " [{0}] {1} {2} {3} {4}",
+                        new Object[] { getCurrentTime(), requestMethod.toString(), url, connection.getResponseCode(), postBody } );
 
                 if( jsonResponse != null )
                 {
-                    logger.log( Level.FINE, sanitiseRequestBodyForLogging( jsonResponse ) );
+                    logger.log( Level.INFO, sanitiseRequestBodyForLogging( jsonResponse ) );
                 }
 
                 if( StringUtils.isEmpty( jsonResponse ) )
@@ -297,7 +291,7 @@ public class Http
             sanitisedRequestBody = matcher.replaceAll( Configuration.theLogPrefix + " $1" );
         }
 
-        regex = Pattern.compile( "(.{6}).+?(.{4})" );
+        regex = Pattern.compile( "(\\d{6})\\d+(\\d{4})" );
         matcher = regex.matcher( sanitisedRequestBody );
         if ( matcher.find() )
         {
